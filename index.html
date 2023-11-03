@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+    h2 {
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input {
+      width: 80%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #0074d9;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    #weather-image {
+      margin-top: 20px;
+      display: none;
+      width: 500px;
+    }
+  </style>
+  <title>Temperature Converter</title>
+</head>
+<body>
+  <div class="container">
+    <h2>Temperature Converter</h2>
+    <label for="temperature">Enter Temperature:</label>
+    <input type="text" id="temperature" placeholder="Enter temperature" required>
+    
+    <label for="fromUnit">From Unit:</label>
+    <select id="fromUnit">
+      <option value="celsius">Celsius</option>
+      <option value="fahrenheit">Fahrenheit</option>
+      <option value="kelvin">Kelvin</option>
+    </select>
+    
+    <label for="toUnit">To Unit:</label>
+    <select id="toUnit">
+      <option value="celsius">Celsius</option>
+      <option value="fahrenheit">Fahrenheit</option>
+      <option value="kelvin">Kelvin</option>
+    </select>
+
+    <button onclick="convertTemperature()">Convert</button>
+
+    <div id="result"></div>
+    <img id="weather-image" src="" alt="Weather Image">
+  </div>
+
+  <script>
+    function convertTemperature() {
+      const temperature = parseFloat(document.getElementById("temperature").value);
+      const fromUnit = document.getElementById("fromUnit").value;
+      const toUnit = document.getElementById("toUnit").value;
+      let result = 0;
+
+      if (fromUnit === "celsius" && toUnit === "fahrenheit") {
+        result = (temperature * 9/5) + 32;
+      } else if (fromUnit === "celsius" && toUnit === "kelvin") {
+        result = temperature + 273.15;
+      } else if (fromUnit === "fahrenheit" && toUnit === "celsius") {
+        result = (temperature - 32) * 5/9;
+      } else if (fromUnit === "fahrenheit" && toUnit === "kelvin") {
+        result = ((temperature - 32) * 5/9) + 273.15;
+      } else if (fromUnit === "kelvin" && toUnit === "celsius") {
+        result = temperature - 273.15;
+      } else if (fromUnit === "kelvin" && toUnit === "fahrenheit") {
+        result = (temperature - 273.15) * 9/5 + 32;
+      } else {
+        result = temperature;
+      }
+
+      document.getElementById("result").innerHTML = `Converted Temperature: ${result} ${toUnit}`;
+      const weatherImage = document.getElementById("weather-image");
+
+      if (toUnit === "celsius" && result <= 10 || toUnit === "kelvin" && result <= 283.15 || toUnit === "fahrenheit" && result <= 50) {
+        weatherImage.src = "winter.jpg";
+      } else if (toUnit === "celsius" && result >= 40 || toUnit === "kelvin" && result >= 313.15 || toUnit === "fahrenheit" && result >= 104) {
+        weatherImage.src = "summer.png";
+      } else {
+        weatherImage.src = "spring.jpg";
+      }
+
+      weatherImage.style.display = "block";
+    }
+  </script>
+</body>
+</html>
